@@ -1,0 +1,5 @@
+Water, lecture 1.
+
+A water molecule is polar because oxygen pulls shared electrons more strongly than hydrogen does.
+The bent shape leaves a slight negative charge near oxygen and a slight positive charge near each hydrogen.
+That uneven charge is why water dissolves table salt so well.

@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Fastshot — Describe an app. We'll build it.</title>
+  <meta name="description" content="Fastshot turns a written description into a working app.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=block" rel="stylesheet">
+  <script>
+    if (window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+      document.documentElement.classList.add("anim");
+    }
+  </script>
+  <style>
+    :root {
+      --u: min(0.06410256vw, 0.12400794vh);
+      --vu: 0.09920635vh;
+      --inset-top: 41;
+      --inset-bottom: 106;
+      --font-text: Inter, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-display: Inter, var(--font-text);
+      --brand-x: 225; --brand-y: 45; --mark: 34; --brand-gap: 12; --brand-fs: 18.49;
+      --links-y: 50.5; --links-gap: 50; --links-fs: 21.69;
+      --cta-x: 1195; --cta-y: 42; --cta-w: 140; --cta-h: 43; --cta-r: 12; --cta-fs: 15.70; --cta-dy: 2;
+      --hero-gap: 51;
+      --h1-y: 323; --h1-fs: 36.25; --display-ls: 0.0018em;
+      --nav-ls: -0.0115em; --brand-ls: -0.0154em; --cta-ls: -0.0127em; --body-ls: 0.007em;
+      --label-ls: normal; --model-ls: normal; --proof-ls: 0.0065em;
+      --w-regular: 400; --w-display-wght: 410; --w-medium: 500; --w-semibold: 600;
+      --w-display: var(--w-display-wght); --w-nav: 400; --w-brand: 500; --w-cta: 520;
+      --w-body: var(--w-regular); --w-label: var(--w-medium);
+      --w-model: var(--w-regular); --w-proof: 480;
+      --card-x: 425; --card-y: 413; --card-w: 708; --card-h: 143; --card-r: 26;
+      --ph-x: 452; --ph-y: 446; --ph-fs: 9.97;
+      --chips-x: 444; --chips-y: 505; --chip-h: 30; --chip-r: 9; --chip-fs: 9.0; --chip-gap: 5.5;
+      --son-fs: 10.4; --son-top: 15.5; --chev-gap: 6.2;
+      --chev-x: 1013.5; --chev-y: 522.3;
+      --att-x: 1043.2; --att-y: 515.1;
+      --send-x: 1084; --send-y: 507; --send-d: 35;
+      --by-y: 799; --by-fs: 14.01; --logo-y: 867; --logo-gap: 62;
+      --e-primary: cubic-bezier(.16, 1, .3, 1);
+      --e-soft: cubic-bezier(.22, 1, .36, 1);
+    }
+
+    @supports (height: 100dvh) {
+      :root {
+        --u: min(0.06410256vw, 0.12400794dvh);
+        --vu: 0.09920635dvh;
+      }
+    }
+
+    @media (min-width: 1561px) {
+      :root { --inset-top: 27; --inset-bottom: 74; }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    button, input, textarea { font: inherit; color: inherit; background: none; border: 0; }
+    img, svg { display: block; }
+    button { cursor: pointer; }
+    html, body { height: 100%; }
+    html {
+      font-family: var(--font-text);
+      font-synthesis: none;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: geometricPrecision;
+    }
+    body { overflow: hidden; background: #0a0d12; }
+    :focus-visible { outline: 2px solid #F8B285; outline-offset: 3px; border-radius: 4px; }
+
+    .stage {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      background: #0a0d12;
+    }
+    .stage-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+    .frame {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      padding: calc(var(--inset-top) * var(--vu)) calc(225 * var(--u)) calc(var(--inset-bottom) * var(--vu));
+    }
+
+    .menu-toggle {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .nav {
+      position: relative;
+      height: calc(43 * var(--u));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex: none;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--brand-gap) * var(--u));
+      text-decoration: none;
+      color: #fff;
+    }
+    .mark {
+      width: calc(var(--mark) * var(--u));
+      height: calc(var(--mark) * var(--u));
+      flex: none;
+    }
+    .word {
+      font-family: var(--font-display);
+      font-size: calc(var(--brand-fs) * var(--u));
+      font-weight: var(--w-brand);
+      letter-spacing: var(--brand-ls);
+      line-height: 1;
+      transform: translateY(calc(1 * var(--u)));
+      font-variation-settings: "opsz" 32;
+      text-shadow: 0 calc(1 * var(--u)) calc(10 * var(--u)) rgba(0, 0, 0, .30);
+    }
+    .links {
+      position: absolute;
+      left: 50%;
+      top: calc((var(--links-y) - 41) * var(--u));
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: calc(var(--links-gap) * var(--u));
+    }
+    .links a {
+      font-size: calc(var(--links-fs) * var(--u));
+      font-weight: var(--w-nav);
+      letter-spacing: var(--nav-ls);
+      line-height: 1.2;
+      color: #fff;
+      text-decoration: none;
+      white-space: nowrap;
+      text-shadow: 0 calc(1 * var(--u)) calc(12 * var(--u)) rgba(0, 0, 0, .32);
+      transition: opacity .18s ease;
+    }
+    .links a:hover { opacity: .72; }
+    .cta {
+      align-self: flex-start;
+      margin-top: calc((var(--cta-y) - 41) * var(--u));
+      width: calc(var(--cta-w) * var(--u));
+      height: calc(var(--cta-h) * var(--u));
+      border-radius: calc(var(--cta-r) * var(--u));
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: #fff;
+      font-size: calc(var(--cta-fs) * var(--u));
+      font-weight: var(--w-cta);
+      letter-spacing: var(--cta-ls);
+      line-height: 1;
+      background: linear-gradient(180deg, #3d3d3f 0%, #1d1d20 100%);
+      box-shadow: inset 0 calc(1 * var(--u)) 0 rgba(255, 255, 255, .10), 0 calc(2 * var(--u)) calc(14 * var(--u)) rgba(0, 0, 0, .28);
+    }
+    .cta span { transform: translateY(calc(var(--cta-dy) * var(--u))); }
+    .cta:hover { filter: brightness(1.16); }
+    .cta:active { transform: translateY(1px); }
+    .burger { display: none; }
+
+    .sheet { display: none; }
+
+    .hero {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: calc(var(--hero-gap) * var(--vu));
+      padding-bottom: calc(4 * var(--vu));
+    }
+    .h1 {
+      font-family: var(--font-display);
+      font-size: calc(var(--h1-fs) * var(--u));
+      font-weight: var(--w-display);
+      line-height: 1.10;
+      letter-spacing: var(--display-ls);
+      color: #fff;
+      text-align: center;
+      white-space: nowrap;
+      font-variation-settings: "opsz" 32;
+      text-shadow: 0 calc(2 * var(--u)) calc(22 * var(--u)) rgba(0, 0, 0, .30);
+    }
+
+    .card {
+      position: relative;
+      width: calc(var(--card-w) * var(--u));
+      height: calc(var(--card-h) * var(--u));
+      margin-right: calc(3 * var(--u));
+      border-radius: calc(var(--card-r) * var(--u));
+      background: rgba(41, 41, 43, .955);
+      -webkit-backdrop-filter: blur(calc(26 * var(--u))) saturate(112%);
+      backdrop-filter: blur(calc(26 * var(--u))) saturate(112%);
+      box-shadow: inset 0 0 0 1px rgba(214, 228, 255, .14), 0 calc(22 * var(--u)) calc(60 * var(--u)) rgba(0, 0, 0, .30);
+    }
+    .ph {
+      position: absolute;
+      left: calc((var(--ph-x) - var(--card-x)) * var(--u));
+      top: calc((var(--ph-y) - var(--card-y)) * var(--u));
+      right: calc(24 * var(--u));
+      color: #8B8C8E;
+      font-size: calc(var(--ph-fs) * var(--u));
+      font-weight: var(--w-body);
+      line-height: 1.35;
+      letter-spacing: var(--body-ls);
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    /* Chip row is 30u. The send circle is taller and hangs 7u below this strip. */
+    .tools {
+      position: absolute;
+      left: calc((var(--chips-x) - var(--card-x)) * var(--u));
+      top: calc((var(--chips-y) - var(--card-y)) * var(--u));
+      height: calc(var(--chip-h) * var(--u));
+      right: calc((425 + 708 - 1134) * var(--u));
+    }
+    .chips {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      gap: calc(var(--chip-gap) * var(--u));
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      flex: none;
+      height: calc(var(--chip-h) * var(--u));
+      width: calc(var(--cw) * var(--u));
+      padding: 0 0 0 calc(var(--pl) * var(--u));
+      gap: calc(var(--ig) * var(--u));
+      border-radius: calc(var(--chip-r) * var(--u));
+      font-size: calc(var(--chip-fs) * var(--u));
+      font-weight: var(--w-label);
+      letter-spacing: var(--label-ls);
+      line-height: 1;
+      color: #909093;
+      white-space: nowrap;
+      background: linear-gradient(180deg, rgba(255, 255, 255, .088) 0%, rgba(255, 255, 255, .050) 45%, rgba(255, 255, 255, .038) 100%);
+      border: 1px solid rgba(255, 255, 255, .05);
+    }
+    .chip svg { flex: none; }
+    .chip span { transform: translateY(calc(2 * var(--u))); }
+    .chip:hover {
+      background: linear-gradient(180deg, rgba(255, 255, 255, .14), rgba(255, 255, 255, .07));
+      color: #c8c8cb;
+    }
+
+    /* Right cluster is absolutely placed, not a centered flex row. */
+    .right {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .right > * { position: absolute; pointer-events: auto; }
+    .model {
+      left: calc(510.2 * var(--u));
+      top: calc(var(--son-top) * var(--u));
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--chev-gap) * var(--u));
+      font-size: calc(var(--son-fs) * var(--u));
+      font-weight: var(--w-model);
+      letter-spacing: var(--model-ls);
+      line-height: 1;
+      color: #98999C;
+      white-space: nowrap;
+    }
+    .model svg { width: calc(6.8 * var(--u)); height: auto; }
+    .attach {
+      left: calc(599.15 * var(--u));
+      top: calc(10.14 * var(--u));
+      color: #A9AAAD;
+      line-height: 0;
+    }
+    .attach svg { width: calc(19.79 * var(--u)); height: auto; }
+    .attach:hover { color: #fff; }
+    .send {
+      left: calc((var(--send-x) - var(--chips-x)) * var(--u));
+      top: calc((var(--send-y) - var(--chips-y)) * var(--u));
+      width: calc(var(--send-d) * var(--u));
+      height: calc(var(--send-d) * var(--u));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      background: linear-gradient(163deg, #FBBC94 0%, #F49D70 46%, #E88654 100%);
+      box-shadow: 0 calc(3 * var(--u)) calc(12 * var(--u)) rgba(210, 110, 60, .34);
+    }
+    .send svg { width: calc(11.66 * var(--u)); height: auto; }
+    .send:hover { filter: brightness(1.07); }
+    .send:active { transform: scale(.95); }
+
+    .proof {
+      flex: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: calc(52.3 * var(--vu));
+    }
+    .by {
+      font-family: var(--font-display);
+      font-size: calc(var(--by-fs) * var(--u));
+      font-weight: var(--w-proof);
+      letter-spacing: var(--proof-ls);
+      line-height: 1;
+      color: rgba(255, 255, 255, .95);
+      font-variation-settings: "opsz" 32;
+      text-shadow: 0 calc(1 * var(--u)) calc(12 * var(--u)) rgba(0, 0, 0, .35);
+    }
+    .logos {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--logo-gap) * var(--u));
+      color: #fff;
+      filter: drop-shadow(0 calc(1 * var(--u)) calc(10 * var(--u)) rgba(0, 0, 0, .30));
+    }
+    .logo-google { width: calc(96.84 * var(--u)); height: auto; }
+    .logo-cisco { width: calc(67.29 * var(--u)); height: auto; }
+    .logo-adobe { width: calc(88.68 * var(--u)); height: auto; }
+
+    @keyframes e-settle-down {
+      from { opacity: 0; transform: translateY(calc(-5 * var(--u))); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes e-settle-up {
+      from { opacity: 0; transform: translateY(calc(6 * var(--u))); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes e-mark {
+      from { opacity: 0; transform: scale(.9); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes e-focus {
+      from { opacity: 0; transform: translateY(calc(14 * var(--u))); filter: blur(calc(6 * var(--u))); }
+      to { opacity: 1; transform: none; filter: blur(0); }
+    }
+    @keyframes e-panel {
+      from { opacity: 0; transform: translateY(calc(18 * var(--u))) scale(.985); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes e-populate {
+      from { opacity: 0; transform: translateY(calc(4 * var(--u))); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes e-send {
+      from { opacity: 0; transform: scale(.82); }
+      to { opacity: 1; transform: none; }
+    }
+
+    html.anim .brand { animation: e-settle-down .58s var(--e-soft) .06s both; }
+    html.anim .mark { animation: e-mark .62s var(--e-primary) .06s both; }
+    html.anim .links a { animation: e-settle-down .50s var(--e-soft) both; }
+    html.anim .links a:nth-child(1) { animation-delay: .16s; }
+    html.anim .links a:nth-child(2) { animation-delay: .21s; }
+    html.anim .links a:nth-child(3) { animation-delay: .26s; }
+    html.anim .links a:nth-child(4) { animation-delay: .31s; }
+    html.anim .nav > .cta { animation: e-settle-down .55s var(--e-soft) .34s both; }
+    html.anim .h1 {
+      animation: e-focus 1.00s var(--e-primary) .30s both;
+      will-change: transform, opacity;
+    }
+    html.anim .card {
+      animation: e-panel .90s var(--e-primary) .62s both;
+      will-change: transform, opacity;
+    }
+    html.anim .ph { animation: e-populate .50s var(--e-soft) .88s both; }
+    html.anim .chips { animation: e-populate .50s var(--e-soft) .94s both; }
+    html.anim .right { animation: e-populate .50s var(--e-soft) 1.00s both; }
+    html.anim .send { animation: e-send .50s var(--e-primary) 1.00s both; }
+    html.anim .by { animation: e-settle-up .55s var(--e-soft) 1.08s both; }
+    html.anim .logos svg { animation: e-settle-up .55s var(--e-soft) both; }
+    html.anim .logos svg:nth-child(1) { animation-delay: 1.16s; }
+    html.anim .logos svg:nth-child(2) { animation-delay: 1.22s; }
+    html.anim .logos svg:nth-child(3) { animation-delay: 1.28s; }
+
+    /* Tablet: fluid desktop, one toolbar row, right cluster becomes flex. */
+    @media (min-width: 600px) and (max-width: 1180px) and (min-height: 600px) {
+      :root { --u: 1px; }
+      .frame {
+        padding: clamp(24px, 3.4vh, 44px) clamp(28px, 4.2vw, 60px) clamp(26px, 4.4vh, 56px);
+      }
+      .links { gap: clamp(14px, 2.4vw, 40px); }
+      .links a { font-size: clamp(13px, 1.7vw, 18px); }
+      .h1 {
+        font-size: clamp(27px, 4.3vw, 44px);
+        line-height: 1.12;
+      }
+      .card {
+        width: min(100%, clamp(516px, 74vw, 760px));
+        height: auto;
+        margin-right: 0;
+        padding: clamp(15px, 1.9vw, 24px);
+        border-radius: clamp(17px, 2.1vw, 26px);
+        display: flex;
+        flex-direction: column;
+        gap: clamp(20px, 3.2vh, 44px);
+      }
+      .ph {
+        position: static;
+        white-space: normal;
+        font-size: clamp(11px, 1.35vw, 14px);
+        line-height: 1.4;
+        right: auto;
+      }
+      .tools {
+        position: static;
+        height: auto;
+        right: auto;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: clamp(10px, 1.4vw, 18px);
+      }
+      .chips {
+        height: auto;
+        flex-wrap: nowrap;
+        gap: clamp(6px, 0.85vw, 10px);
+      }
+      .chip {
+        width: auto;
+        height: clamp(29px, 3.4vh, 34px);
+        padding: 0 clamp(7px, 1vw, 13px);
+        font-size: clamp(9.6px, 1.12vw, 12.5px);
+      }
+      .right {
+        position: static;
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+        gap: 0;
+        pointer-events: none;
+      }
+      .right > * { position: static; pointer-events: auto; }
+      .model { font-size: clamp(9.8px, 1.12vw, 12.5px); }
+      .attach { margin-left: clamp(9px, 1.4vw, 20px); }
+      .attach svg { width: 18px; }
+      .send {
+        margin-left: clamp(9px, 1.3vw, 18px);
+        width: clamp(32px, 3.5vw, 38px);
+        height: clamp(32px, 3.5vw, 38px);
+      }
+      .proof { gap: clamp(15px, 2.5vh, 30px); }
+    }
+
+    /* Compact phone, and short landscape windows. */
+    @media (max-width: 599px), (max-height: 599px) and (max-width: 1180px) {
+      :root { --u: 1px; }
+      .frame {
+        padding:
+          max(18px, env(safe-area-inset-top))
+          max(clamp(18px, 5.2vw, 40px), env(safe-area-inset-right))
+          max(20px, env(safe-area-inset-bottom))
+          max(clamp(18px, 5.2vw, 40px), env(safe-area-inset-left));
+      }
+      .links, .nav > .cta { display: none; }
+      .burger {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 11px;
+        background: rgba(255, 255, 255, .10);
+        border: 1px solid rgba(255, 255, 255, .14);
+        color: #fff;
+      }
+      .mark { width: 30px; height: 30px; }
+      .word { font-size: 16px; }
+      .nav { height: 40px; }
+      .sheet {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows .32s cubic-bezier(.4, 0, .2, 1);
+        flex: none;
+      }
+      #menu:checked ~ .sheet { grid-template-rows: 1fr; }
+      .sheet-inner { overflow: hidden; min-height: 0; }
+      .sheet-panel {
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: 16px;
+        background: rgba(24, 24, 27, .86);
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, .09);
+        display: flex;
+        flex-direction: column;
+      }
+      .sheet-panel a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 1.2;
+        padding: 11px 8px;
+      }
+      .sheet-cta {
+        margin-top: 6px;
+        height: 40px;
+        width: 100%;
+        border-radius: 11px;
+        align-self: stretch;
+        font-size: 15px;
+      }
+      .h1 {
+        width: 100%;
+        max-width: 15ch;
+        white-space: normal;
+        font-size: clamp(29px, 7.6vw, 50px);
+        line-height: 1.14;
+        letter-spacing: -.012em;
+      }
+      .hero { gap: clamp(22px, 4.5vh, 40px); }
+      .card {
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+        margin-right: 0;
+        display: flex;
+        flex-direction: column;
+        gap: clamp(16px, 4.6vh, 34px);
+        padding: clamp(13px, 3.4vw, 18px);
+        border-radius: 22px;
+      }
+      .ph {
+        position: static;
+        right: auto;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: clamp(9.4px, 2.95vw, 14px);
+      }
+      .tools {
+        position: static;
+        height: auto;
+        right: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+      .chips {
+        height: auto;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .chip {
+        width: auto;
+        height: 32px;
+        padding: 0 10px;
+        font-size: 11px;
+      }
+      .right {
+        position: static;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        pointer-events: none;
+      }
+      .right > * { position: static; pointer-events: auto; }
+      .model { font-size: 13px; }
+      .attach { margin-left: auto; }
+      .attach svg { width: 20px; }
+      .send {
+        margin-left: 14px;
+        width: 40px;
+        height: 40px;
+      }
+      .logos { gap: 28px; }
+      .logo-google { width: 84px; }
+      .logo-cisco { width: 58px; }
+      .logo-adobe { width: 76px; }
+    }
+
+    @media (max-width: 1180px) and (max-height: 560px) {
+      .hero { gap: 16px; padding-top: 10px; }
+      .h1 { font-size: clamp(24px, 5.4vh, 34px); }
+      .proof { gap: 10px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-delay: 0s !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <video class="stage-video" autoplay muted loop playsinline
+      src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260826_124724_bc041163-d651-425f-aea3-2acc1efc2c96.mp4"></video>
+    <div class="frame">
+      <input class="menu-toggle" type="checkbox" id="menu" aria-label="Menu">
+      <header class="nav">
+        <a class="brand" href="#" aria-label="Fastshot home">
+          <svg class="mark" viewBox="0 0 34 34" aria-hidden="true">
+            <circle cx="17" cy="17" r="17" fill="#9C86CE"/>
+            <circle cx="17" cy="17" r="8.6" fill="#FFFFFF"/>
+            <circle cx="17" cy="17" r="3.7" fill="#151519"/>
+          </svg>
+          <span class="word">Fastshot</span>
+        </a>
+        <nav class="links" aria-label="Primary">
+          <a href="#">Features</a>
+          <a href="#">Examples</a>
+          <a href="#">Pricing</a>
+          <a href="#">Docs</a>
+        </nav>
+        <a class="cta" href="#"><span>Get Started</span></a>
+        <label class="burger" for="menu" aria-label="Open menu">
+          <svg width="17" height="12" viewBox="0 0 17 12" aria-hidden="true">
+            <rect width="17" height="1.6" rx=".8" fill="currentColor"/>
+            <rect y="10.4" width="17" height="1.6" rx=".8" fill="currentColor"/>
+          </svg>
+        </label>
+      </header>
+      <div class="sheet">
+        <div class="sheet-inner">
+          <div class="sheet-panel">
+            <a href="#">Features</a>
+            <a href="#">Examples</a>
+            <a href="#">Pricing</a>
+            <a href="#">Docs</a>
+            <a class="cta sheet-cta" href="#"><span>Get Started</span></a>
+          </div>
+        </div>
+      </div>
+      <main class="hero">
+        <h1 class="h1">Describe an app. We'll build it.</h1>
+        <form class="card" onsubmit="return false" aria-label="App description">
+          <p class="ph">Build a fintech tracking app with bank level privacy and...</p>
+          <div class="tools">
+            <div class="chips">
+              <button class="chip" type="button" style="--cw:107;--pl:12;--ig:3.7">
+                <svg width="15.06" height="13.4" viewBox="0 0 18 16" aria-hidden="true">
+                  <path fill="currentColor" d="M2.1 1.1h8.7c.95 0 1.7.75 1.7 1.7v5.15c0 .95-.75 1.7-1.7 1.7H2.1c-.95 0-1.7-.75-1.7-1.7V2.8c0-.95.75-1.7 1.7-1.7zm.35 2.05h8v1.15h-8V3.15zM6.55 7.35h9.15c.9 0 1.6.7 1.6 1.6v4.15c0 .9-.7 1.6-1.6 1.6H6.55c-.9 0-1.6-.7-1.6-1.6V8.95c0-.9.7-1.6 1.6-1.6zm.4 2.05h8.35v1.05H6.95V9.4z"/>
+                </svg>
+                <span>Attach Screens</span>
+              </button>
+              <button class="chip" type="button" style="--cw:108;--pl:16;--ig:3.9">
+                <svg width="11.8" height="17.7" viewBox="0 0 38 57" aria-hidden="true">
+                  <path fill="currentColor" d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0zM9.5 57a9.5 9.5 0 0 1 0-19H19v9.5A9.5 9.5 0 0 1 9.5 57zM19 0v19h9.5a9.5 9.5 0 0 0 0-19H19zM0 9.5A9.5 9.5 0 0 1 9.5 0H19v19H9.5A9.5 9.5 0 0 1 0 9.5zM0 28.5A9.5 9.5 0 0 1 9.5 19H19v19H9.5A9.5 9.5 0 0 1 0 28.5z"/>
+                </svg>
+                <span>Attach a Figma</span>
+              </button>
+              <button class="chip" type="button" style="--cw:107;--pl:15.8;--ig:2.9">
+                <svg width="12.13" height="12.13" viewBox="0 0 16 16" aria-hidden="true">
+                  <path fill="currentColor" fill-rule="evenodd" d="M8 1.15a6.85 6.85 0 1 0 0 13.7 6.85 6.85 0 0 0 0-13.7zM8.7 2.55a5.45 5.45 0 0 1 0 10.9V2.55z"/>
+                </svg>
+                <span>Today's Theme</span>
+              </button>
+            </div>
+            <div class="right">
+              <button class="model" type="button">
+                Sonnet 4.5
+                <svg viewBox="0 0 8 5" aria-hidden="true">
+                  <path fill="currentColor" d="M.4.7 4 4.35 7.6.7 6.45.7 4 3.15 1.55.7z"/>
+                </svg>
+              </button>
+              <button class="attach" type="button" aria-label="Attach">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="currentColor" d="M16.5 6.75v8.25a4.5 4.5 0 1 1-9 0V6a3 3 0 1 1 6 0v8.25a1.5 1.5 0 0 1-3 0V7.5H9v6.75a3 3 0 1 0 6 0V6a4.5 4.5 0 1 0-9 0v9a6 6 0 0 0 12 0V6.75h-1.5z"/>
+                </svg>
+              </button>
+              <button class="send" type="button" aria-label="Build it">
+                <svg viewBox="0 0 12 14" aria-hidden="true">
+                  <path fill="currentColor" d="M6 .35 11.15 6.05H8.2V13.6H3.8V6.05H.85z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </form>
+      </main>
+      <footer class="proof">
+        <p class="by">Built by engineers from</p>
+        <div class="logos">
+          <svg class="logo-google" viewBox="0 40 128 42" role="img" aria-label="Google">
+            <path fill="currentColor" d="M31.85 57.91H17.09v4.38h10.47c-.52 6.14-5.63 8.76-10.45 8.76a11.7 11.7 0 0 1 0-23.4 11.36 11.36 0 0 1 7.91 3.18l3.07-3.18A15.59 15.59 0 0 0 17 43.26a16.09 16.09 0 1 0 .23 32.18c8.61 0 14.92-5.9 14.92-14.63a13.13 13.13 0 0 0-.27-2.9z"/>
+            <path fill="currentColor" fill-rule="evenodd" d="M43.94 54.74a10.34 10.34 0 1 0 10.38 10.38 10.22 10.22 0 0 0-10.38-10.38zm.06 4.06a6.29 6.29 0 1 1-5.92 6.26 5.95 5.95 0 0 1 5.92-6.26z"/>
+            <path fill="currentColor" fill-rule="evenodd" d="M66.56 54.74a10.34 10.34 0 1 0 10.37 10.38 10.22 10.22 0 0 0-10.37-10.38zm.06 4.06a6.29 6.29 0 1 1-5.92 6.26 5.95 5.95 0 0 1 5.92-6.26z"/>
+            <path fill="currentColor" d="M88.73 54.75c-5.56 0-9.93 4.87-9.93 10.33a10.2 10.2 0 0 0 9.83 10.35 6.83 6.83 0 0 0 5.67-2.51v2c0 3.57-2.17 5.7-5.44 5.7a5.73 5.73 0 0 1-5.28-3.32l-4 1.66a10 10 0 0 0 9.3 6.09c5.53 0 9.74-3.48 9.74-10.78V55.37h-4.31v1.75a7.32 7.32 0 0 0-5.58-2.37zm.4 4.05c2.73 0 5.52 2.33 5.52 6.3s-2.79 6.27-5.58 6.27a5.88 5.88 0 0 1-5.72-6.23c0-4 2.86-6.34 5.78-6.34z"/>
+            <path fill="currentColor" d="M101.67 74.82h4.56V44.33h-4.56z"/>
+            <path fill="currentColor" d="M117.93 54.72c-5.24 0-9.65 4.17-9.65 10.33a10 10 0 0 0 10.15 10.38 10.49 10.49 0 0 0 8.66-4.54l-3.58-2.38a5.79 5.79 0 0 1-5.07 2.85 5.32 5.32 0 0 1-5.07-3.13l13.87-5.75-.72-1.69a9.36 9.36 0 0 0-8.6-6.07zm.18 4a4.12 4.12 0 0 1 3.83 2.21l-9.26 3.87a5.74 5.74 0 0 1 5.43-6.08z"/>
+          </svg>
+          <svg class="logo-cisco" viewBox="0 0 220 104" role="img" aria-label="Cisco">
+            <g fill="currentColor">
+              <rect x="74" y="18" width="3.6" height="12" rx="1"/>
+              <rect x="80.6" y="12" width="3.6" height="18" rx="1"/>
+              <rect x="87.2" y="7" width="3.6" height="23" rx="1"/>
+              <rect x="93.8" y="3" width="3.6" height="27" rx="1"/>
+              <rect x="100.4" y="7" width="3.6" height="23" rx="1"/>
+              <rect x="107" y="3" width="3.6" height="27" rx="1"/>
+              <rect x="113.6" y="7" width="3.6" height="23" rx="1"/>
+              <rect x="120.2" y="12" width="3.6" height="18" rx="1"/>
+              <rect x="126.8" y="16" width="3.6" height="14" rx="1"/>
+              <rect x="133.4" y="20" width="3.6" height="10" rx="1"/>
+            </g>
+            <text x="110" y="88" text-anchor="middle" fill="currentColor" font-family="Inter, Arial, sans-serif" font-weight="500" font-size="48" letter-spacing="-0.045em">cisco</text>
+          </svg>
+          <svg class="logo-adobe" viewBox="0 0 186 84" role="img" aria-label="Adobe">
+            <text x="93" y="64" text-anchor="middle" fill="currentColor" font-family="Inter, Arial, sans-serif" font-weight="500" font-size="64" letter-spacing="-0.04em">Adobe</text>
+          </svg>
+        </div>
+      </footer>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      if (!root.classList.contains("anim")) return;
+      var done = false;
+      function finish() {
+        if (done) return;
+        done = true;
+        root.classList.remove("anim");
+      }
+      var logos = document.querySelectorAll(".logos svg");
+      var last = logos[logos.length - 1];
+      if (last) last.addEventListener("animationend", finish);
+      setTimeout(finish, 2600);
+    })();
+  </script>
+</body>
+</html>
